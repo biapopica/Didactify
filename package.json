@@ -1,0 +1,18 @@
+{
+  "name": "didactify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm --workspace apps/client run dev\" \"npm --workspace apps/server run dev\"",
+    "build": "concurrently \"npm --workspace apps/client run build\" \"npm --workspace apps/server run build\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
