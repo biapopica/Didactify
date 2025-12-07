@@ -21,7 +21,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 function RouteComponent() {
   return (
     <Box
-      minH="100vh"
+      minH={`calc(100vh - 68px)`}
       display="flex"
       alignItems="center"
       justifyContent="center"
