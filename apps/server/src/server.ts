@@ -3,10 +3,12 @@ import express from "express";
 import { auth } from "./lib/auth";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
+import routes from "./routes.js";
 
 const app = express();
 const PORT = 3000;
 
+// Middleware
 app.use(
   cors({
     origin: "http://localhost:8000",
@@ -18,6 +20,9 @@ app.use(
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 app.use(express.json());
+
+// Routes
+app.use(routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

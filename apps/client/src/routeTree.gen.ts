@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoggedoutIndexRouteImport } from './routes/_loggedout/index'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as LoggedoutCoursesGenerateRoadmapIndexRouteImport } from './routes/_loggedout/courses/generate/roadmap/index'
+import { Route as LoggedoutCoursesGenerateQuestionsIndexRouteImport } from './routes/_loggedout/courses/generate/questions/index'
 
 const LoggedoutIndexRoute = LoggedoutIndexRouteImport.update({
   id: '/_loggedout/',
@@ -28,35 +30,71 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoggedoutCoursesGenerateRoadmapIndexRoute =
+  LoggedoutCoursesGenerateRoadmapIndexRouteImport.update({
+    id: '/_loggedout/courses/generate/roadmap/',
+    path: '/courses/generate/roadmap/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LoggedoutCoursesGenerateQuestionsIndexRoute =
+  LoggedoutCoursesGenerateQuestionsIndexRouteImport.update({
+    id: '/_loggedout/courses/generate/questions/',
+    path: '/courses/generate/questions/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/': typeof LoggedoutIndexRoute
+  '/courses/generate/questions': typeof LoggedoutCoursesGenerateQuestionsIndexRoute
+  '/courses/generate/roadmap': typeof LoggedoutCoursesGenerateRoadmapIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/': typeof LoggedoutIndexRoute
+  '/courses/generate/questions': typeof LoggedoutCoursesGenerateQuestionsIndexRoute
+  '/courses/generate/roadmap': typeof LoggedoutCoursesGenerateRoadmapIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_loggedout/': typeof LoggedoutIndexRoute
+  '/_loggedout/courses/generate/questions/': typeof LoggedoutCoursesGenerateQuestionsIndexRoute
+  '/_loggedout/courses/generate/roadmap/': typeof LoggedoutCoursesGenerateRoadmapIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/signup' | '/'
+  fullPaths:
+    | '/login'
+    | '/signup'
+    | '/'
+    | '/courses/generate/questions'
+    | '/courses/generate/roadmap'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/'
-  id: '__root__' | '/_auth/login' | '/_auth/signup' | '/_loggedout/'
+  to:
+    | '/login'
+    | '/signup'
+    | '/'
+    | '/courses/generate/questions'
+    | '/courses/generate/roadmap'
+  id:
+    | '__root__'
+    | '/_auth/login'
+    | '/_auth/signup'
+    | '/_loggedout/'
+    | '/_loggedout/courses/generate/questions/'
+    | '/_loggedout/courses/generate/roadmap/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   LoggedoutIndexRoute: typeof LoggedoutIndexRoute
+  LoggedoutCoursesGenerateQuestionsIndexRoute: typeof LoggedoutCoursesGenerateQuestionsIndexRoute
+  LoggedoutCoursesGenerateRoadmapIndexRoute: typeof LoggedoutCoursesGenerateRoadmapIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +120,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_loggedout/courses/generate/roadmap/': {
+      id: '/_loggedout/courses/generate/roadmap/'
+      path: '/courses/generate/roadmap'
+      fullPath: '/courses/generate/roadmap'
+      preLoaderRoute: typeof LoggedoutCoursesGenerateRoadmapIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_loggedout/courses/generate/questions/': {
+      id: '/_loggedout/courses/generate/questions/'
+      path: '/courses/generate/questions'
+      fullPath: '/courses/generate/questions'
+      preLoaderRoute: typeof LoggedoutCoursesGenerateQuestionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +141,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   LoggedoutIndexRoute: LoggedoutIndexRoute,
+  LoggedoutCoursesGenerateQuestionsIndexRoute:
+    LoggedoutCoursesGenerateQuestionsIndexRoute,
+  LoggedoutCoursesGenerateRoadmapIndexRoute:
+    LoggedoutCoursesGenerateRoadmapIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

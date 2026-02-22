@@ -51,9 +51,9 @@ function LoginForm() {
       await authClient.signIn.email({
         email: data.email,
         password: data.password,
-        callbackURL: '/', // Redirect after login
+        callbackURL: '/',
       })
-      // Navigation is handled by callbackURL
+
       navigate({ to: '/' })
     } catch (err) {
       setError('Invalid email or password')

@@ -1,24 +1,32 @@
-import {
-  Box,
-  Button,
-  Text,
-  Field,
-  Input,
-  Stack,
-  Flex,
-  Group,
-} from '@chakra-ui/react'
+import { Box, Button, Field, Input, Flex, Group } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
+import axios, { AxiosError } from 'axios'
+import { useNavigate } from '@tanstack/react-router'
 
 const generateSchema = z.object({
-  input: z.string().min(5, 'Please enter a course topic').max(500),
+  input: z.string().min(5, 'Enter a course topic').max(500),
 })
 
 type generateFormValues = z.infer<typeof generateSchema>
+
+interface Question {
+  id: number
+  text: string
+  category?: string
+}
+
+interface QuestionsResponse {
+  success: boolean
+  topic: string
+  result: Question[]
+}
+
+interface ErrorResponse {
+  error: string
+}
 
 export default function CourseGeneratingForm() {
   const navigate = useNavigate()
@@ -34,10 +42,36 @@ export default function CourseGeneratingForm() {
   })
 
   const onSubmit = async (data: generateFormValues) => {
+    setError(null)
+
     try {
-      console.log('Generating course for:', data.input)
+      const response = await axios.post<QuestionsResponse>(
+        'http://localhost:3000/api/courses/generate/questions',
+        { topic: data.input },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+
+      console.log('RESPONSE', response)
+      navigate({
+        to: '/courses/generate/questions',
+        search: {
+          topic: response.data.topic,
+          questions: JSON.stringify(response.data?.result),
+        },
+      })
     } catch (err) {
-      setError('Something went wrong. Try again.')
+      if (axios.isAxiosError(err)) {
+        const axiosError = err as AxiosError<ErrorResponse>
+        setError(
+          axiosError.response?.data?.error || 'Failed to generate questions',
+        )
+      } else {
+        setError('Something went wrong. Try again.')
+      }
     }
   }
 
@@ -83,14 +117,13 @@ export default function CourseGeneratingForm() {
             bg="teal.400"
             color="black"
             fontWeight="semibold"
-            boxShadow="0 0 30px rgba(56, 178, 172, 0.7), 0 0 60px rgba(56, 178, 172, 0.4), 0 0 90px rgba(56, 178, 172, 0.2)"
+            boxShadow="0 0 20px rgba(56, 178, 172, 0.35)"
             _hover={{
               bg: 'teal.300',
-              boxShadow:
-                '0 0 40px rgba(56, 178, 172, 0.9), 0 0 80px rgba(56, 178, 172, 0.5), 0 0 120px rgba(56, 178, 172, 0.3)',
+              boxShadow: '0 0 28px rgba(56, 178, 172, 0.45)',
             }}
           >
-            Generate Course
+            Generate
           </Button>
         </Group>
 

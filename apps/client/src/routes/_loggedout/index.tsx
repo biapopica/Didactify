@@ -7,7 +7,6 @@ export const Route = createFileRoute('/_loggedout/')({
 })
 
 function App() {
-  // Convert Chakra token to actual CSS color
   const gridLinesGray = useToken('colors', 'gray.950')
   const gradientTeal = `${useToken('colors', 'teal.400')}10`
 
@@ -40,16 +39,17 @@ function App() {
         display="flex"
         alignItems="center"
         justifyContent="center"
-        marginTop="32"
+        marginTop="44"
       >
         <Text fontSize="6xl" fontWeight="bold" color="white" textAlign="center">
-          Learn Anything with <br />
+          Learn Anything with
+          <br />
           <Text
             as="span"
             color="teal.400"
             textShadow="0 0 500px rgba(56, 178, 172, 0.4)"
           >
-            AI-Generated Courses
+            Generated Courses
           </Text>
         </Text>
       </Box>

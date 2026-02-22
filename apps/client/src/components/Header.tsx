@@ -1,22 +1,14 @@
 import { authClient } from '@/lib/auth-client'
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Portal,
-  Text,
-  useToken,
-} from '@chakra-ui/react'
+import { Button, Flex, Portal } from '@chakra-ui/react'
 import { CustomLink } from './CustomLink'
 import { Menu } from '@chakra-ui/react'
 import Logo from './Logo'
+import { useLogout } from '@/hooks/useLogout'
 
 export default function Header() {
   const { data: session } = authClient.useSession()
   const isAuthenticated = !!session?.user
-  const gradientTeal = `${useToken('colors', 'teal.400')}10`
+  const { logout } = useLogout()
 
   return (
     <Flex
@@ -45,6 +37,7 @@ export default function Header() {
                     value="log-out"
                     color="fg.error"
                     _hover={{ bg: 'bg.error', color: 'fg.error' }}
+                    onClick={logout}
                   >
                     Log out
                   </Menu.Item>
@@ -57,19 +50,17 @@ export default function Header() {
             <CustomLink
               to="/login"
               fontWeight="500"
-              color="gray.700"
+              color="gray.600"
               textDecoration="none"
               px={4}
               py={2}
               borderRadius="md"
               transition="all 0.2s"
               _hover={{
-                color: 'blue.600',
-                bg: 'gray.100',
+                color: 'teal.400',
               }}
               _active={{
-                color: 'blue.600',
-                bg: 'gray.100',
+                color: 'teal.400',
               }}
             >
               Log in
@@ -78,18 +69,18 @@ export default function Header() {
             <CustomLink
               to="/signup"
               fontWeight="500"
-              color="white"
-              bg="blue.600"
+              color="gray.950"
+              bg="teal.400"
               textDecoration="none"
               px={6}
               py={2}
               borderRadius="md"
               transition="all 0.2s"
               _hover={{
-                bg: 'blue.700',
+                bg: 'teal.300',
               }}
               _active={{
-                bg: 'blue.700',
+                bg: 'teal.300',
               }}
             >
               Sign up
@@ -97,12 +88,6 @@ export default function Header() {
           </Flex>
         )}
       </Flex>
-
-      {/* <Box
-        position="absolute"
-        inset={0}
-        bg={`radial-gradient(ellipse at 60% -500px, ${gradientTeal} 0%, transparent 50%)`}
-      /> */}
     </Flex>
   )
 }
